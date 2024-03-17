@@ -1,0 +1,1 @@
+ALTER TABLE "food_orders" ALTER COLUMN "createdAt" SET NOT NULL;

@@ -1,4 +1,27 @@
-import { createFoodOrder, deleteFoodOrder } from "@/lib/db/foodOrders";
+import {
+  createFoodOrder,
+  deleteFoodOrder,
+  getFoodOrders,
+} from "@/lib/db/foodOrders";
+export const dynamic = "only-no-store";
+export async function GET(request: Request) {
+  try {
+    const foodOrder = await getFoodOrders();
+    if (!foodOrder) {
+      return Response.json({ message: "No orders to delete!" });
+    }
+    return Response.json(
+      foodOrder.map((order) => ({
+        ...order,
+        createdAt: order.createdAt.toISOString(),
+      }))
+    );
+  } catch (error: any) {
+    return new Response("There was an error gettings the orders!", {
+      status: 500,
+    });
+  }
+}
 
 export async function POST(request: Request) {
   const data = await request.json();

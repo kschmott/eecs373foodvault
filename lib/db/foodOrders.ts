@@ -13,7 +13,11 @@ export async function getFoodOrder() {
     orderBy: (orders, { asc }) => [asc(orders.createdAt)],
   });
 }
-
+export async function getFoodOrders() {
+  return db.query.FoodOrders.findMany({
+    orderBy: (orders, { asc }) => [asc(orders.createdAt)],
+  });
+}
 export async function deleteFoodOrder(id: number) {
   return db.delete(FoodOrders).where(eq(FoodOrders.id, id));
 }

@@ -8,6 +8,13 @@
       "when": 1710118805032,
       "tag": "0000_uneven_proudstar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1710717738674,
+      "tag": "0001_round_talos",
+      "breakpoints": true
     }
   ]
 }

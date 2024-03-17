@@ -13,7 +13,7 @@ export const FoodOrders = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).unique().notNull(),
-    createdAt: timestamp("createdAt").defaultNow(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
   },
   (table) => {
     return {
