@@ -6,14 +6,14 @@ import {
 export async function GET(request: Request) {
   try {
     const foodOrder = await getFoodOrders();
-    if (!foodOrder) {
-      return Response.json({ message: "No orders to delete!" });
-    }
     return Response.json(
-      foodOrder.map((order) => ({
-        ...order,
-        createdAt: order.createdAt.toISOString(),
-      }))
+      foodOrder.map(
+        (order) => ({
+          ...order,
+          createdAt: order.createdAt.toISOString(),
+        }),
+        { status: 200 }
+      )
     );
   } catch (error: any) {
     return new Response("There was an error gettings the orders!", {
