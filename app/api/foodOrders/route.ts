@@ -3,7 +3,6 @@ import {
   deleteFoodOrder,
   getFoodOrders,
 } from "@/lib/db/foodOrders";
-export const fetchCache = "only-no-store";
 export async function GET(request: Request) {
   try {
     const foodOrder = await getFoodOrders();
