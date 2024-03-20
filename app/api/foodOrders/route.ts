@@ -24,7 +24,7 @@ export async function GET(request: Request) {
         id.padStart(10, "0");
         const newOrder = {
           id: id,
-          name: order.name,
+          name: order.name.substring(0, 20),
         };
         return newOrder;
       });
