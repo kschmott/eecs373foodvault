@@ -4,17 +4,40 @@ import {
   getFoodOrders,
 } from "@/lib/db/foodOrders";
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const mode = searchParams.get("mode");
   try {
     const foodOrder = await getFoodOrders();
-    return Response.json(
-      foodOrder.map(
-        (order) => ({
-          ...order,
-          createdAt: order.createdAt.toISOString(),
-        }),
-        { status: 200 }
-      )
-    );
+    if (mode === "json") {
+      return Response.json(
+        foodOrder.map(
+          (order) => ({
+            ...order,
+            createdAt: order.createdAt.toISOString(),
+          }),
+          { status: 200 }
+        )
+      );
+    } else if (mode === "string") {
+      const newFoodOrders = foodOrder.map((order) => {
+        let id = order.id.toString();
+        id.padStart(10, "0");
+        const newOrder = {
+          id: id,
+          name: order.name,
+        };
+        return newOrder;
+      });
+      const foodOrdersString = newFoodOrders
+        .map((order) => {
+          return `${order.id}\0${order.name}`;
+        })
+        .join("|");
+      const numItems = newFoodOrders.length.toString().padStart(2, "0");
+      return new Response(`${numItems}\0${foodOrdersString}`, {
+        status: 200,
+      });
+    }
   } catch (error: any) {
     return new Response("There was an error gettings the orders!", {
       status: 500,
