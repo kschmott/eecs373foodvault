@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         .map((order) => {
           return `${order.id}\0${order.name}`;
         })
-        .join("|");
+        .join("\0");
       const numItems = newFoodOrders.length.toString().padStart(2, "0");
       return new Response(`${numItems}\0${foodOrdersString}`, {
         status: 200,
