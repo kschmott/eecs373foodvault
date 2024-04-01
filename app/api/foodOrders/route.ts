@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     } else if (mode === "string") {
       const newFoodOrders = foodOrder.map((order) => {
         let id = order.id.toString();
-        id.padStart(10, "0");
+        id = id.padStart(10, "0");
         const newOrder = {
           id: id,
           name: order.name.substring(0, 20),
