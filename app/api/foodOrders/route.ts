@@ -62,14 +62,22 @@ export async function POST(request: Request) {
 export const runtime = "edge";
 
 export async function DELETE(request: Request) {
-  const data = await request.json();
+  const url = new URL(request.url);
+  const id = url.searchParams.get("id");
+  if(!id){
+    return new Response("You must provide an id to delete an order!", {
+      status: 400,
+    });
+  }
   try {
-    await deleteFoodOrder(data.id);
+    await deleteFoodOrder(parseInt(id));
   } catch (error: any) {
     return new Response("There was an error deleting the order!", {
       status: 500,
     });
   }
 
-  return Response.json(data);
+  return new Response("Order deleted!", {
+    status: 200,
+  });
 }
