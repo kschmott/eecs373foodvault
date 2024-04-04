@@ -34,7 +34,7 @@ export async function GET(request: Request) {
         })
         .join("\0");
       const numItems = newFoodOrders.length.toString().padStart(2, "0");
-      return new Response(`${numItems}\0${foodOrdersString}`, {
+      return new Response(`DATA${numItems}\0${foodOrdersString}`, {
         status: 200,
       });
     }
