@@ -34,7 +34,7 @@ export async function GET(request: Request) {
         })
         .join("\0");
       const numItems = newFoodOrders.length.toString().padStart(2, "0");
-      return new Response(`DATA${numItems}\0${foodOrdersString}`, {
+      return new Response(`DATA\0${numItems}\0${foodOrdersString}`, {
         status: 200,
       });
     }
@@ -54,6 +54,10 @@ export async function POST(request: Request) {
       return new Response("There is already an order with that name!", {
         status: 400,
       });
+    } else {
+      return new Response("There was an error creating the order!", {
+        status: 500,
+      });
     }
   }
 
@@ -64,7 +68,7 @@ export const runtime = "edge";
 export async function DELETE(request: Request) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
-  if(!id){
+  if (!id) {
     return new Response("You must provide an id to delete an order!", {
       status: 400,
     });

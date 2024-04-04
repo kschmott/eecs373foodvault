@@ -5,6 +5,10 @@ import { eq } from "drizzle-orm";
 export async function createFoodOrder(
   foodOrder: typeof FoodOrders.$inferInsert
 ) {
+  const foodOrders = await getFoodOrders();
+  if (foodOrders.length >= 5) {
+    throw new Error("5 Orders max");
+  }
   return db.insert(FoodOrders).values(foodOrder);
 }
 
