@@ -15,12 +15,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { createFoodOrder } from "@/lib/calls/foodOrders";
+import { useRouter } from "next/navigation";
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Your name must be at least 2 characters.",
   }),
 });
 export default function Home() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,11 +31,15 @@ export default function Home() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createFoodOrder(values).catch((error: any) => {
+    const res = await createFoodOrder(values).catch((error: any) => {
       form.setError("name", {
         message: error.response.data,
       });
     });
+    console.log(res);
+    if (res) {
+      router.push("/success?id=" + res.data.id);
+    }
   }
   return (
     <main className="md:container mx-auto flex flex-col pt-4 items-center">

@@ -9,7 +9,10 @@ export async function createFoodOrder(
   if (foodOrders.length >= 5) {
     throw new Error("5 Orders max");
   }
-  return db.insert(FoodOrders).values(foodOrder);
+  return db
+    .insert(FoodOrders)
+    .values(foodOrder)
+    .returning({ insertedId: FoodOrders.id });
 }
 
 export async function getFoodOrder() {

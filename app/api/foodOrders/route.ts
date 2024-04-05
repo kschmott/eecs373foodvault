@@ -3,6 +3,9 @@ import {
   deleteFoodOrder,
   getFoodOrders,
 } from "@/lib/db/foodOrders";
+import crypto from "crypto";
+import QRcode from "qrcode";
+import fs from "fs";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const mode = searchParams.get("mode");
@@ -48,23 +51,43 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const data = await request.json();
   try {
-    await createFoodOrder(data);
+    const res = await createFoodOrder(data);
+    // const signature = signAndEncodeText(res[0].insertedId.toString());
+    // const qrCode = await generateQR("2");
+    return Response.json({ id: res[0].insertedId }, { status: 200 });
   } catch (error: any) {
     if (error.code === "23505") {
       return new Response("There is already an order with that name!", {
         status: 400,
       });
     } else {
+      console.log(error);
       return new Response("There was an error creating the order!", {
         status: 500,
       });
     }
   }
-
-  return Response.json(data);
 }
-export const runtime = "edge";
+function signAndEncodeText(text: string) {
+  const signer = crypto.createSign("sha256");
+  signer.update(text);
+  signer.end();
+  // Note: Actual signature might need to be truncated to fit the 200-character limit
+  const signature = signer
+    .sign(process.env.SECRET?.replace(/\\n/g, "\n") ?? "", "base64")
+    .slice(0, 86); // Example truncation;
+  // Concatenate or structure your data and signature efficiently
+  return `${text}|${signature}`;
+}
 
+async function generateQR(data: string) {
+  return new Promise((resolve, reject) => {
+    QRcode.toDataURL(data, { errorCorrectionLevel: "L" }, (err, url) => {
+      if (err) return reject(err);
+      resolve(url);
+    });
+  });
+}
 export async function DELETE(request: Request) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
