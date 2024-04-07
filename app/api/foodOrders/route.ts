@@ -29,12 +29,13 @@ export async function GET(request: Request) {
         const newOrder = {
           id: id,
           name: order.name.substring(0, 20),
+          inBox: order.inBox,
         };
         return newOrder;
       });
       const foodOrdersString = newFoodOrders
         .map((order) => {
-          return `${order.id}\0${order.name}`;
+          return `${order.id}\0${order.name}\0${order.inBox}\0$`;
         })
         .join("\0");
       const numItems = newFoodOrders.length.toString().padStart(2, "0");
