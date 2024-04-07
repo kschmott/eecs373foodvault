@@ -14,7 +14,7 @@ export const FoodOrders = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).unique().notNull(),
-    inBox: integer("inBox").default(0).notNull(),
+    box: integer("box").default(-1).notNull(),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
   },
   (table) => {

@@ -2,8 +2,8 @@ import { FoodOrders } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 
-export async function updateBoxStatus(id: number, inBox: number) {
-  return db.update(FoodOrders).set({ inBox }).where(eq(FoodOrders.id, id));
+export async function updateBoxStatus(id: number, box: number) {
+  return db.update(FoodOrders).set({ box }).where(eq(FoodOrders.id, id));
 }
 
 export async function createFoodOrder(
