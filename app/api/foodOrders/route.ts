@@ -77,7 +77,8 @@ export async function PUT(request: Request) {
 
   try {
     const id = parseInt(searchParams.get("id") ?? "");
-    await updateBoxStatus(id, 1);
+    const box = parseInt(searchParams.get("box") ?? "");
+    await updateBoxStatus(id, box);
     return Response.json({ id: id }, { status: 200 });
   } catch (error: any) {
     if (error.code === "23505") {
