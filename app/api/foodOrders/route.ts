@@ -35,7 +35,7 @@ export async function GET(request: Request) {
       });
       const foodOrdersString = newFoodOrders
         .map((order) => {
-          return `${order.id}\0${order.name}\0${order.box}\0`;
+          return `${order.id}\0${order.name}\0${order.box}`;
         })
         .join("\0");
       const numItems = newFoodOrders.length.toString().padStart(2, "0");
