@@ -2,6 +2,7 @@ import {
   createFoodOrder,
   deleteFoodOrder,
   getFoodOrders,
+  updateBoxStatus,
 } from "@/lib/db/foodOrders";
 import crypto from "crypto";
 import QRcode from "qrcode";
@@ -68,6 +69,27 @@ export async function POST(request: Request) {
     }
   }
 }
+export async function PUT(request: Request) {
+  const { searchParams } = new URL(request.url);
+
+  try {
+    const id = parseInt(searchParams.get("id") ?? "");
+    await updateBoxStatus(id, 1);
+    return Response.json({ id: id }, { status: 200 });
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return new Response("There is already an order with that name!", {
+        status: 400,
+      });
+    } else {
+      console.log(error);
+      return new Response("There was an error creating the order!", {
+        status: 500,
+      });
+    }
+  }
+}
+
 function signAndEncodeText(text: string) {
   const signer = crypto.createSign("sha256");
   signer.update(text);

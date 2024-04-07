@@ -6,6 +6,7 @@ import {
   varchar,
   timestamp,
   index,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const FoodOrders = pgTable(
@@ -13,6 +14,7 @@ export const FoodOrders = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).unique().notNull(),
+    inBox: integer("inBox").default(0).notNull(),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
   },
   (table) => {

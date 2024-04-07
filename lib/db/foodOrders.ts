@@ -2,6 +2,10 @@ import { FoodOrders } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 
+export async function updateBoxStatus(id: number, inBox: number) {
+  return db.update(FoodOrders).set({ inBox }).where(eq(FoodOrders.id, id));
+}
+
 export async function createFoodOrder(
   foodOrder: typeof FoodOrders.$inferInsert
 ) {

@@ -15,6 +15,13 @@
       "when": 1710717738674,
       "tag": "0001_round_talos",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712448321676,
+      "tag": "0002_hard_the_professor",
+      "breakpoints": true
     }
   ]
 }
