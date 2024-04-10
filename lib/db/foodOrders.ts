@@ -10,8 +10,8 @@ export async function createFoodOrder(
   foodOrder: typeof FoodOrders.$inferInsert
 ) {
   const foodOrders = await getFoodOrders();
-  if (foodOrders.length >= 5) {
-    throw new Error("5 Orders max");
+  if (foodOrders.length >= 4) {
+    throw new Error("4 Orders max");
   }
   return db
     .insert(FoodOrders)
