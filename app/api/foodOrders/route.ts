@@ -64,7 +64,7 @@ export async function POST(request: Request) {
       });
     } else {
       console.log(error);
-      return new Response("There was an error creating the order!", {
+      return new Response(error.message ?? "There was an error", {
         status: 500,
       });
     }
