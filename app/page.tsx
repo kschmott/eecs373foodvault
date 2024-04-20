@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { createFoodOrder } from "@/lib/calls/foodOrders";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Your name must be at least 2 characters.",
@@ -23,6 +24,7 @@ const formSchema = z.object({
 });
 export default function Home() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,6 +33,7 @@ export default function Home() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     const res = await createFoodOrder(values).catch((error: any) => {
       form.setError("name", {
         message: error.response.data,
@@ -40,6 +43,7 @@ export default function Home() {
     if (res) {
       router.push("/success?id=" + res.data.id);
     }
+    setLoading(false);
   }
   return (
     <main className="md:container mx-auto flex flex-col pt-4 items-center">
@@ -63,7 +67,9 @@ export default function Home() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={loading}>
+              Submit
+            </Button>
           </form>
         </Form>
       </div>
